@@ -206,11 +206,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81e59887ff6ca494292574c0e3722c99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialPlayerSpeed: 4
-  maxPlayerSpeed: 30
-  playerSpeedIncreaseRate: 0.1
-  jumpHeight: 1
-  initialGravityValue: -9.81
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -219,7 +214,12 @@ MonoBehaviour:
     m_Bits: 128
   obstacleLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
+  initialPlayerSpeed: 4
+  maxPlayerSpeed: 30
+  playerSpeedIncreaseRate: 0.1
+  jumpHeight: 1
+  initialGravityValue: -9.81
   turnEvent:
     m_PersistentCalls:
       m_Calls:
@@ -271,8 +271,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60673661fecdf414d99f99763f70b959, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groundedPlayer: 0
   playerSpeed: 5
+  playerRunning: 6
   jumpHeight: 1
   gravityValue: -9.81
+  animator: {fileID: 0}
   ThirdPerson: {fileID: 0}
   FirstPerson: {fileID: 0}
+  isSprinting: 0
+  playerRigid: {fileID: 0}
+  ro_speed: 0
+  isWalking: 0
+  playerTrans: {fileID: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  turnLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  turnEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  gameOverEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  scoreUpdateEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  scoreMultiplier: 10

@@ -8,11 +8,11 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Turn
   - Water
   - UI
-  - 
-  - 
+  - Ground
+  - Obstacle
   - 
   - 
   - 
