@@ -10,7 +10,7 @@ namespace Runner.Player
     [RequireComponent(typeof(CharacterController), typeof(PlayerInput))]
     public class PlayerController : MonoBehaviour
     {
-
+        //Initial SetUps
         [SerializeField]
         private LayerMask groundLayer;
         [SerializeField]
@@ -34,8 +34,6 @@ namespace Runner.Player
         [SerializeField]
         private UnityEvent<int> scoreUpdateEvent;
         [SerializeField]
-        private AnimationClip slideAnimationClip;
-        [SerializeField]
         private Animator animator;
         [SerializeField]
         private float scoreMultiplier = 10f;
@@ -48,14 +46,10 @@ namespace Runner.Player
         private PlayerInput playerInput;
         private InputAction turnAction;
         private InputAction jumpAction;
-        private InputAction slideAction;
         private InputAction cameraAction;
         public bool ChangeCameraPressed { get; private set; } = false;        
 
         private CharacterController controller;
-        private int slidingAnimationId;
-
-        private bool sliding = false;
         private float score = 0;
 
         public CinemachineVirtualCamera ThirdPerson;
@@ -63,46 +57,35 @@ namespace Runner.Player
 
         private CinemachineBrain _cinemachineBrain;
 
-
+        //When Game Begins
         private void Awake()
         {
             playerInput = GetComponent<PlayerInput>();
             controller = GetComponent<CharacterController>();
             turnAction = playerInput.actions["Turn"];
             jumpAction = playerInput.actions["Jump"];
-            slideAction = playerInput.actions["Slide"];
             cameraAction = playerInput.actions["ChangeCamera"];
-
-            slidingAnimationId = Animator.StringToHash("Sliding");
-
         }
 
         private void OnEnable()
         {
             turnAction.performed += PlayerTurn;
-            slideAction.performed += PlayerSlide;
             jumpAction.performed += PlayerJump;
             cameraAction.performed += PlayerCamera;
-
         }
 
         private void OnDisable()
         {
             turnAction.performed -= PlayerTurn;
-            slideAction.performed -= PlayerSlide;
             jumpAction.performed -= PlayerJump;
             cameraAction.performed -= PlayerCamera;
-
         }
-
-
 
         private void Start()
         {
             playerSpeed = initialPlayerSpeed;
             gravity = initialGravityValue;
             _cinemachineBrain = GetComponent<CinemachineBrain>();
-
         }
 
         private void PlayerCamera(InputAction.CallbackContext context)
@@ -110,19 +93,7 @@ namespace Runner.Player
 
         }
 
-        private void PlayerTurn(InputAction.CallbackContext context)
-        {
-            Vector3? turnPosition = CheckTurn(context.ReadValue<float>());
-            if (!turnPosition.HasValue)
-            {
-                GameOver();
-                return;
-            }
-
-            Vector3 targetDirection = Quaternion.AngleAxis(90 * context.ReadValue<float>(), Vector3.up) * movementDirection;
-            turnEvent.Invoke(targetDirection);
-            Turn(context.ReadValue<float>(), turnPosition.Value);
-        }
+        //Check if the player has entered a turn
 
         private Vector3? CheckTurn(float turnValue)
         {
@@ -139,6 +110,21 @@ namespace Runner.Player
             return null;
         }
 
+        // Turn the player
+        private void PlayerTurn(InputAction.CallbackContext context)
+        {
+            Vector3? turnPosition = CheckTurn(context.ReadValue<float>());
+            if (!turnPosition.HasValue)
+            {
+                GameOver();
+                return;
+            }
+
+            Vector3 targetDirection = Quaternion.AngleAxis(90 * context.ReadValue<float>(), Vector3.up) * movementDirection;
+            turnEvent.Invoke(targetDirection);
+            Turn(context.ReadValue<float>(), turnPosition.Value);
+        }
+
         private void Turn(float turnValue, Vector3 turnPosition)
         {
             Vector3 tempPlayerPosition = new Vector3(turnPosition.x, transform.position.y, turnPosition.z);
@@ -152,47 +138,7 @@ namespace Runner.Player
         }
 
 
-        private void PlayerSlide(InputAction.CallbackContext context)
-        {
-            if (!sliding && IsGrounded())
-            {
-                StartCoroutine(Slide());
-            }
-
-        }
-
-        private IEnumerator Slide()
-        {
-
-            sliding = true;
-            Vector3 originalControllerCenter = controller.center;
-            Vector3 newControllerCenter = originalControllerCenter;
-
-            controller.height /= 2;
-            newControllerCenter.y -= controller.height / 2;
-            controller.center = newControllerCenter;
-
-            
-            animator.Play(slidingAnimationId);
-            yield return new WaitForSeconds(slideAnimationClip.length / animator.speed);
-     
-            controller.height *= 2;
-            controller.center = originalControllerCenter;
-            sliding = false;
-
-        }
-
-
-        private void PlayerJump(InputAction.CallbackContext context)
-        {
-            if (IsGrounded())
-            {
-                playerVelocity.y += Mathf.Sqrt(jumpHeight * gravity * -3f);
-                controller.Move(playerVelocity * Time.deltaTime);
-            }
-
-        }
-
+        // Main Game Movement and Update Score
         private void Update()
         {
 
@@ -237,10 +183,9 @@ namespace Runner.Player
                 FirstPerson.Priority = 11;
             }
 
-            //ChangeCameraPressed = PlayerControls.ChangeCamera.WasPressedThisFrame();
-
         }
 
+        //Check if player on ground
         private bool IsGrounded(float length = .2f)
         {
             Vector3 raycastOriginFirst = transform.position;
@@ -251,9 +196,6 @@ namespace Runner.Player
             raycastOriginFirst -= transform.forward * .2f;
             raycastOriginSecond += transform.forward * .2f;
 
-            //Debug.DrawLine(raycastOriginFirst, Vector3.down, Color.green, 2f);
-            //Debug.DrawLine(raycastOriginSecond, Vector3.down, Color.red, 2f);
-
             if (Physics.Raycast(raycastOriginFirst, Vector3.down, out RaycastHit hit, length, groundLayer) || Physics.Raycast(raycastOriginSecond, Vector3.down, out RaycastHit hit2, length, groundLayer))
             {
                 return true;
@@ -262,6 +204,21 @@ namespace Runner.Player
 
         }
 
+        //If Player is grounded allow JUMP!
+
+        private void PlayerJump(InputAction.CallbackContext context)
+        {
+            if (IsGrounded())
+            {
+                playerVelocity.y += Mathf.Sqrt(jumpHeight * gravity * -3f);
+                controller.Move(playerVelocity * Time.deltaTime);
+                animator.SetTrigger("RunJump");
+            }
+
+        }
+
+
+        //Game Over Section
         private void GameOver()
         {
             Debug.Log("Game Over");

@@ -43,6 +43,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1455221299, guid: 6318a03f0029ca347ab9a056fa3d8e1d, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 07d3a93855768fe4ea429e132b22e61b, type: 2}
     - target: {fileID: 1466621237842857038, guid: 6318a03f0029ca347ab9a056fa3d8e1d, type: 3}
       propertyPath: m_LocalPosition.y
       value: -1
@@ -119,9 +123,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7388800709006519016, guid: 6318a03f0029ca347ab9a056fa3d8e1d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3157853865626091573}
-    - targetCorrespondingSourceObject: {fileID: 7388800709006519016, guid: 6318a03f0029ca347ab9a056fa3d8e1d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8522087366246313914}
   m_SourcePrefab: {fileID: 100100000, guid: 6318a03f0029ca347ab9a056fa3d8e1d, type: 3}
 --- !u!95 &1140269600022228196 stripped
 Animator:
@@ -259,47 +260,3 @@ MonoBehaviour:
   playerSpeed: 0
   ThirdPerson: {fileID: 0}
   FirstPerson: {fileID: 0}
---- !u!114 &8522087366246313914
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7591175820345895999}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60673661fecdf414d99f99763f70b959, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  groundedPlayer: 0
-  playerSpeed: 5
-  playerRunning: 6
-  jumpHeight: 1
-  gravityValue: -9.81
-  animator: {fileID: 0}
-  ThirdPerson: {fileID: 0}
-  FirstPerson: {fileID: 0}
-  isSprinting: 0
-  playerRigid: {fileID: 0}
-  ro_speed: 0
-  isWalking: 0
-  playerTrans: {fileID: 0}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  turnLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  turnEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  gameOverEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  scoreUpdateEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  scoreMultiplier: 10
