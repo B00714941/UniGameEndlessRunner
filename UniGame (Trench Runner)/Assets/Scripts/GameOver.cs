@@ -23,9 +23,21 @@ public class GameOver : MonoBehaviour
 
     }
 
+    public void ExitGame()
+    {
+        #if UNITY_EDITOR
+				UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
+    }
+
     public void RestartLevel()
     {
+        gameOverCanvas.SetActive(false);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        //SceneManager.LoadScene("TrenchRunner");
+        //SceneManager.SetActiveScene(SceneManager.GetSceneByName("TrenchRunner"));
     }
 
 }

@@ -8,6 +8,8 @@ namespace SlimUI.ModernMenu{
 	public class UIMenuManager : MonoBehaviour {
 		private Animator CameraObject;
 
+		public GameObject TITLE;
+
 		// campaign button sub menu
         [Header("MENUS")]
         [Tooltip("The Menu for when the MAIN menu buttons")]
@@ -119,8 +121,12 @@ namespace SlimUI.ModernMenu{
 
 		public void PlayCampaign(){
 			exitMenu.SetActive(false);
+			TITLE.SetActive(false);
+			mainMenu.SetActive(false);
 			if(extrasMenu) extrasMenu.SetActive(false);
-			playMenu.SetActive(true);
+            SceneManager.LoadScene("TrenchRunner");
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName("TrenchRunner"));
+            //playMenu.SetActive(true);
 		}
 		
 		public void PlayCampaignMobile(){
