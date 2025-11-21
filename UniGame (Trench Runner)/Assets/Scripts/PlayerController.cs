@@ -22,7 +22,7 @@ namespace Runner.Player
         [SerializeField]
         private float maxPlayerSpeed = 20f;
         [SerializeField]
-        private float playerSpeedIncreaseRate = .1f;
+        private float playerSpeedIncreaseRate = 1f;
         [SerializeField]
         private float jumpHeight = 1.0f;
         [SerializeField]
@@ -80,13 +80,14 @@ namespace Runner.Player
             jumpAction.performed -= PlayerJump;
             cameraAction.performed -= PlayerCamera;
         }
+        
+        public void Start()
+         {
 
-        private void Start()
-        {
             playerSpeed = initialPlayerSpeed;
             gravity = initialGravityValue;
             _cinemachineBrain = GetComponent<CinemachineBrain>();
-        }
+         }
 
         private void PlayerCamera(InputAction.CallbackContext context)
         {

@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Main Menu.unity
+    path: Assets/Scenes/MainGameScene.unity
     guid: 07742a0d0734816439f44654f3b59703
   - enabled: 1
     path: Assets/Scenes/TrenchRunner.unity
