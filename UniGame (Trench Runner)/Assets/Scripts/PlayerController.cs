@@ -37,6 +37,8 @@ namespace Runner.Player
         private Animator animator;
         [SerializeField]
         private float scoreMultiplier = 10f;
+        [SerializeField]
+        private AudioClip runningFX;
 
         private float gravity;
         public float playerSpeed;
@@ -56,6 +58,7 @@ namespace Runner.Player
         public CinemachineVirtualCamera FirstPerson;
 
         private CinemachineBrain _cinemachineBrain;
+        private AudioSource footstepsRunning;
 
         //When Game Begins
         private void Awake()
@@ -65,6 +68,7 @@ namespace Runner.Player
             turnAction = playerInput.actions["Turn"];
             jumpAction = playerInput.actions["Jump"];
             cameraAction = playerInput.actions["ChangeCamera"];
+            footstepsRunning = GetComponent<AudioSource>();
         }
 
         private void OnEnable()
@@ -87,6 +91,8 @@ namespace Runner.Player
             playerSpeed = initialPlayerSpeed;
             gravity = initialGravityValue;
             _cinemachineBrain = GetComponent<CinemachineBrain>();
+            footstepsRunning.clip = runningFX;
+            footstepsRunning.Play();
          }
 
         private void PlayerCamera(InputAction.CallbackContext context)
@@ -225,6 +231,7 @@ namespace Runner.Player
             Debug.Log("Game Over");
             gameOverEvent.Invoke((int)score);
             gameObject.SetActive(false);
+            footstepsRunning.Stop();
         }
 
         private void OnControllerColliderHit(ControllerColliderHit hit)
