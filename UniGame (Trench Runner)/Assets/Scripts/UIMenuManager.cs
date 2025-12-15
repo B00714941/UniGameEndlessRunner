@@ -11,8 +11,11 @@ namespace SlimUI.ModernMenu{
 		public GameObject Player;
 		public GameObject SpawnManager;
 		public GameObject TITLE;
+        [SerializeField]
+        public AudioClip IntroFx;
+        public AudioSource MainMenuTheme;
 
-		// campaign button sub menu
+        // campaign button sub menu
         [Header("MENUS")]
         [Tooltip("The Menu for when the MAIN menu buttons")]
         public GameObject mainMenu;
@@ -42,7 +45,10 @@ namespace SlimUI.ModernMenu{
 			mainMenu.SetActive(true);
 
 			SetThemeColors();
-		}
+            MainMenuTheme = GetComponent<AudioSource>();
+            MainMenuTheme.clip = IntroFx;
+            MainMenuTheme.Play();
+        }
 
 		void SetThemeColors()
 		{
@@ -73,9 +79,11 @@ namespace SlimUI.ModernMenu{
 			exitMenu.SetActive(false);
 			TITLE.SetActive(false);
 			mainMenu.SetActive(false);
-			Player.SetActive(true);
+            MainMenuTheme.Stop();
+            Player.SetActive(true);
 			SpawnManager.SetActive(true);
-		}
+            
+        }
 
 		public void ReturnMenu(){
 			playMenu.SetActive(false);

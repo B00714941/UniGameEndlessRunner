@@ -60,6 +60,7 @@ namespace Runner.Player
         private CinemachineBrain _cinemachineBrain;
         private AudioSource footstepsRunning;
 
+
         //When Game Begins
         private void Awake()
         {
