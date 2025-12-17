@@ -39,6 +39,8 @@ namespace Runner.Player
         private float scoreMultiplier = 10f;
         [SerializeField]
         private AudioClip runningFX;
+        [SerializeField]
+        private CapsuleCollider capsuleCollider;
 
         private float gravity;
         public float playerSpeed;
@@ -60,16 +62,22 @@ namespace Runner.Player
         private CinemachineBrain _cinemachineBrain;
         private AudioSource footstepsRunning;
 
+        public int maxHealth;
+        public Healthbar healthbar;
+        private int curHealth;
+
 
         //When Game Begins
         private void Awake()
         {
+            curHealth = maxHealth;
             playerInput = GetComponent<PlayerInput>();
             controller = GetComponent<CharacterController>();
             turnAction = playerInput.actions["Turn"];
             jumpAction = playerInput.actions["Jump"];
             cameraAction = playerInput.actions["ChangeCamera"];
             footstepsRunning = GetComponent<AudioSource>();
+            capsuleCollider = GetComponent<CapsuleCollider>();
         }
 
         private void OnEnable()
@@ -88,7 +96,7 @@ namespace Runner.Player
         
         public void Start()
          {
-
+            curHealth = maxHealth;
             playerSpeed = initialPlayerSpeed;
             gravity = initialGravityValue;
             _cinemachineBrain = GetComponent<CinemachineBrain>();
@@ -193,6 +201,16 @@ namespace Runner.Player
 
         }
 
+        //taking damage
+        public void TakeDamage(int damage)
+        {
+            curHealth -= damage;
+            healthbar.UpdateHealth((float)curHealth/(float)maxHealth);
+
+        }
+
+
+
         //Check if player on ground
         private bool IsGrounded(float length = .2f)
         {
@@ -239,7 +257,21 @@ namespace Runner.Player
         {
             if (((1 << hit.collider.gameObject.layer) & obstacleLayer) != 0)
             {
+                TakeDamage(1);
+            }
+
+            if (curHealth == 0)
+            {
                 GameOver();
+            }
+
+        }
+
+        void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.CompareTag("Obstacle"))
+            {
+                capsuleCollider.enabled = false;
             }
 
         }
