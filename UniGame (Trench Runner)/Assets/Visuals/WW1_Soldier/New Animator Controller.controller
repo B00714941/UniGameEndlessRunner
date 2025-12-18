@@ -7,7 +7,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Take 001
+  m_Name: Death
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -270,7 +270,7 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 1185169974954741573}
-    m_Position: {x: 150, y: 260, z: 0}
+    m_Position: {x: 100, y: 260, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6059351021672779525}
     m_Position: {x: 150, y: 100, z: 0}
@@ -279,7 +279,7 @@ AnimatorStateMachine:
     m_Position: {x: 400, y: 160, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8299373573933023250}
-    m_Position: {x: -100, y: 150, z: 0}
+    m_Position: {x: -120, y: 150, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []

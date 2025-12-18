@@ -20,11 +20,11 @@ namespace Runner
         [SerializeField]
         private LayerMask obstacleLayer;
         [SerializeField]
-        private float initialPlayerSpeed = 4f;
+        private float initialPlayerSpeed = 5f;
         [SerializeField]
         private float maxPlayerSpeed = 20f;
         [SerializeField]
-        private float playerSpeedIncreaseRate = 1f;
+        private float playerSpeedIncreaseRate = 2f;
         [SerializeField]
         private float jumpHeight = 1.0f;
         [SerializeField]
@@ -34,6 +34,8 @@ namespace Runner
         [SerializeField]
         private UnityEvent<int> gameOverEvent;
         [SerializeField]
+        private UnityEvent<int> gameWinEvent;
+        [SerializeField]
         private UnityEvent<int> scoreUpdateEvent;
         [SerializeField]
         private Animator animator;
@@ -42,7 +44,11 @@ namespace Runner
         [SerializeField]
         private AudioClip runningFX;
         [SerializeField]
-        private TextMeshProUGUI scoreText;
+        private TextMeshProUGUI gameOverscoreText;
+        [SerializeField]
+        private TextMeshProUGUI gameWinscoreText;
+        [SerializeField]
+        private TextMeshProUGUI distanceText;
 
 
         private float gravity;
@@ -57,8 +63,13 @@ namespace Runner
         public bool ChangeCameraPressed { get; private set; } = false;        
 
         private CharacterController controller;
-        public float fscore = 0;
-        public int score = 0;
+        //public float fscore = 0;
+        //public int score = 0;
+        public int curscore = 0;
+        public int curdistance = 0;
+        public int maxdistance = 100;
+        public int distancetravelled = 0;
+        public int totalscore = 0;
 
         public CinemachineVirtualCamera ThirdPerson;
         public CinemachineVirtualCamera FirstPerson;
@@ -72,10 +83,11 @@ namespace Runner
         public GameObject healthPrefab;
 
 
-
         //When Game Begins
         private void Awake()
         {
+            totalscore = curscore;
+            distancetravelled = curdistance;
             curHealth = maxHealth;
             playerInput = GetComponent<PlayerInput>();
             controller = GetComponent<CharacterController>();
@@ -101,6 +113,14 @@ namespace Runner
         
         public void Start()
          {
+            totalscore = curscore;
+            distancetravelled = curdistance;
+            playerInput = GetComponent<PlayerInput>();
+            controller = GetComponent<CharacterController>();
+            turnAction = playerInput.actions["Turn"];
+            jumpAction = playerInput.actions["Jump"];
+            cameraAction = playerInput.actions["ChangeCamera"];
+            footstepsRunning = GetComponent<AudioSource>();
             curHealth = maxHealth;
             playerSpeed = initialPlayerSpeed;
             gravity = initialGravityValue;
@@ -144,6 +164,7 @@ namespace Runner
             Vector3 targetDirection = Quaternion.AngleAxis(90 * context.ReadValue<float>(), Vector3.up) * movementDirection;
             turnEvent.Invoke(targetDirection);
             Turn(context.ReadValue<float>(), turnPosition.Value);
+            curdistance = curdistance + 10;
         }
 
         private void Turn(float turnValue, Vector3 turnPosition)
@@ -165,6 +186,7 @@ namespace Runner
             if (curHealth <= 0)
             {
                 GameOver();
+                return;
             }
 
             if (!IsGrounded(20f))
@@ -172,6 +194,15 @@ namespace Runner
                 GameOver();
                 return;
             }
+
+            if (curdistance == maxdistance)
+            {
+                GameWin();
+                return;
+            }
+
+            distancetravelled = curdistance;
+            totalscore = curscore;
 
             controller.Move(transform.forward * playerSpeed * Time.deltaTime);
 
@@ -183,10 +214,13 @@ namespace Runner
             playerVelocity.y += gravity * Time.deltaTime;
             controller.Move(playerVelocity * Time.deltaTime);
 
-            fscore += scoreMultiplier * Time.deltaTime;
+            /*fscore += scoreMultiplier * Time.deltaTime;
             scoreUpdateEvent.Invoke((int)fscore);
-            int score = (int)fscore;
-            scoreText.text = score.ToString();
+            int score = (int)fscore; */
+            gameWinscoreText.text = totalscore.ToString();
+            gameOverscoreText.text = totalscore.ToString();
+            distanceText.text = distancetravelled.ToString();
+
 
 
             if (playerSpeed < maxPlayerSpeed)
@@ -218,6 +252,7 @@ namespace Runner
         {
             animator.SetTrigger("Collision");
             curHealth -= damage;
+            curscore = curscore - 5;
             healthbar.UpdateHealth((float)curHealth/(float)maxHealth);
 
         }
@@ -258,6 +293,8 @@ namespace Runner
                 playerVelocity.y += Mathf.Sqrt(jumpHeight * gravity * -3f);
                 controller.Move(playerVelocity * Time.deltaTime);
                 animator.SetTrigger("RunJump");
+                //curscore = curscore + 10;
+
             }
 
         }
@@ -269,26 +306,22 @@ namespace Runner
             curHealth = 0;
             animator.SetTrigger("Death");
             Debug.Log("Game Over");
-            gameOverEvent.Invoke((int)score);
+            gameOverEvent.Invoke((int)totalscore);
             playerSpeed = 0;
-            //gameObject.SetActive(false);
+            gameObject.SetActive(false);
             footstepsRunning.Stop();
         }
 
-        /*private void OnControllerColliderHit(ControllerColliderHit hit)
+        //Game Win Section
+        private void GameWin()
         {
-            if (((1 << hit.collider.gameObject.layer) & obstacleLayer) != 0)
-            {
-                TakeDamage(1);
-                animator.SetTrigger("Collision");
-            }
-
-            if (curHealth == 0)
-            {
-                GameOver();
-            }
-
-        }*/
+            distanceText.text = maxdistance.ToString();
+            Debug.Log("Congrats!");
+            gameWinEvent.Invoke((int)totalscore);
+            playerSpeed = 0;
+            gameObject.SetActive(false);
+            footstepsRunning.Stop();
+        }
 
         void OnTriggerEnter(Collider other)
         {
@@ -314,6 +347,12 @@ namespace Runner
                 Destroy(other.gameObject);
                 //curHealth = 100;
            
+
+            }
+
+            if (other.gameObject.layer == 10)
+            {
+                curscore = curscore + 10;
 
             }
 

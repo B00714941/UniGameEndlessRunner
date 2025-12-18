@@ -10,8 +10,8 @@ namespace SlimUI.ModernMenu{
         [SerializeField]
         private Animator animator;
         private Animator CameraObject;
-		public GameObject Player;
-		public GameObject SpawnManager;
+		//public GameObject Player;
+		//public GameObject SpawnManager;
 		public GameObject TITLE;
         [SerializeField]
         public AudioClip IntroFx;
@@ -37,8 +37,8 @@ namespace SlimUI.ModernMenu{
 
 		void Start()
 		{
-            Player.SetActive(false);
-            SpawnManager.SetActive(false);
+            //Player.SetActive(false);
+            //SpawnManager.SetActive(false);
             CameraObject = transform.GetComponent<Animator>();
 
 			playMenu.SetActive(false);
@@ -82,9 +82,10 @@ namespace SlimUI.ModernMenu{
 			TITLE.SetActive(false);
 			mainMenu.SetActive(false);
             MainMenuTheme.Stop();
-            Player.SetActive(true);
-			SpawnManager.SetActive(true);
-            animator.SetTrigger("EndAnimation");
+            SceneManager.LoadScene("IntroScreen");
+            //Player.SetActive(true);
+            //SpawnManager.SetActive(true);
+            //animator.SetTrigger("EndAnimation");
         }
 
 		public void ReturnMenu(){

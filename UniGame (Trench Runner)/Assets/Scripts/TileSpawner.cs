@@ -56,7 +56,7 @@ namespace Runner
 
         private void SpawnObstacle()
         {
-            if (Random.value > 0.2f) return;
+            if (Random.value > 0.8f) return;
 
             GameObject obstaclePrefab = SelectRandomGameObjectFromList(obstacles);
             Quaternion newObjectRotation = obstaclePrefab.gameObject.transform.rotation * Quaternion.LookRotation(currentTileDirection, Vector3.up);
@@ -100,7 +100,7 @@ namespace Runner
             int currentPathLength = Random.Range(minStraightTiles, maxStraightTiles);
             for (int i = 0; i < currentPathLength; ++i)
             {
-                if (Random.value > 0.6f)
+                if (Random.value > 0.2f)
                 {
                     SpawnTile(SelectRandomGameObjectFromList(straights).GetComponent<Tile>(), false);
                 }
