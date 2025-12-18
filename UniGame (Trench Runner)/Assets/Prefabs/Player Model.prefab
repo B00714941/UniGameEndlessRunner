@@ -55,6 +55,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6574873858933548358, guid: 6318a03f0029ca347ab9a056fa3d8e1d, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7388800709006519016, guid: 6318a03f0029ca347ab9a056fa3d8e1d, type: 3}
       propertyPath: m_Name
       value: Player Model
@@ -254,9 +258,16 @@ MonoBehaviour:
   scoreUpdateEvent:
     m_PersistentCalls:
       m_Calls: []
-  slideAnimationClip: {fileID: 7400000, guid: 253796ab10369be48aca3dfb99515a5b, type: 2}
   animator: {fileID: 1140269600022228196}
   scoreMultiplier: 10
+  runningFX: {fileID: 0}
+  boxCollider: {fileID: 0}
+  boxCollider1: {fileID: 0}
+  boxCollider2: {fileID: 0}
+  boxCollider3: {fileID: 0}
+  boxCollider4: {fileID: 0}
   playerSpeed: 0
   ThirdPerson: {fileID: 0}
   FirstPerson: {fileID: 0}
+  maxHealth: 0
+  healthbar: {fileID: 0}

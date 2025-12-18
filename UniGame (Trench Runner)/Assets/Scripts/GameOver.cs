@@ -16,7 +16,7 @@ public class GameOver : MonoBehaviour
 
     public void StopGame(int score)
     {
-        //Time.timeScale = 0f;
+        Time.timeScale = 0f;
         gameOverCanvas.SetActive(true);
         this.score = score;
         scoreText.text = score.ToString();
@@ -35,7 +35,7 @@ public class GameOver : MonoBehaviour
     public void RestartLevel()
     {
         gameOverCanvas.SetActive(false);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         //SceneManager.LoadScene("TrenchRunner");
         //SceneManager.SetActiveScene(SceneManager.GetSceneByName("TrenchRunner"));
     }

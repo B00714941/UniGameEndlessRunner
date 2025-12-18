@@ -1,10 +1,12 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
 using Cinemachine;
+using TMPro;
 
-namespace Runner.Player
+namespace Runner
 {
 
     [RequireComponent(typeof(CharacterController), typeof(PlayerInput))]
@@ -40,7 +42,8 @@ namespace Runner.Player
         [SerializeField]
         private AudioClip runningFX;
         [SerializeField]
-        private CapsuleCollider capsuleCollider;
+        private TextMeshProUGUI scoreText;
+
 
         private float gravity;
         public float playerSpeed;
@@ -54,7 +57,8 @@ namespace Runner.Player
         public bool ChangeCameraPressed { get; private set; } = false;        
 
         private CharacterController controller;
-        private float score = 0;
+        public float fscore = 0;
+        public int score = 0;
 
         public CinemachineVirtualCamera ThirdPerson;
         public CinemachineVirtualCamera FirstPerson;
@@ -64,7 +68,9 @@ namespace Runner.Player
 
         public int maxHealth;
         public Healthbar healthbar;
-        private int curHealth;
+        public int curHealth;
+        public GameObject healthPrefab;
+
 
 
         //When Game Begins
@@ -77,7 +83,6 @@ namespace Runner.Player
             jumpAction = playerInput.actions["Jump"];
             cameraAction = playerInput.actions["ChangeCamera"];
             footstepsRunning = GetComponent<AudioSource>();
-            capsuleCollider = GetComponent<CapsuleCollider>();
         }
 
         private void OnEnable()
@@ -157,6 +162,10 @@ namespace Runner.Player
         // Main Game Movement and Update Score
         private void Update()
         {
+            if (curHealth <= 0)
+            {
+                GameOver();
+            }
 
             if (!IsGrounded(20f))
             {
@@ -174,8 +183,11 @@ namespace Runner.Player
             playerVelocity.y += gravity * Time.deltaTime;
             controller.Move(playerVelocity * Time.deltaTime);
 
-            score += scoreMultiplier * Time.deltaTime;
-            scoreUpdateEvent.Invoke((int)score);
+            fscore += scoreMultiplier * Time.deltaTime;
+            scoreUpdateEvent.Invoke((int)fscore);
+            int score = (int)fscore;
+            scoreText.text = score.ToString();
+
 
             if (playerSpeed < maxPlayerSpeed)
             {
@@ -204,11 +216,18 @@ namespace Runner.Player
         //taking damage
         public void TakeDamage(int damage)
         {
+            animator.SetTrigger("Collision");
             curHealth -= damage;
             healthbar.UpdateHealth((float)curHealth/(float)maxHealth);
 
         }
 
+        //adding health
+        public void HealUp(int damage)
+        {
+            curHealth += damage;
+            healthbar.UpdateHealth((float)curHealth / (float)maxHealth);
+        }
 
 
         //Check if player on ground
@@ -247,17 +266,21 @@ namespace Runner.Player
         //Game Over Section
         private void GameOver()
         {
+            curHealth = 0;
+            animator.SetTrigger("Death");
             Debug.Log("Game Over");
             gameOverEvent.Invoke((int)score);
-            gameObject.SetActive(false);
+            playerSpeed = 0;
+            //gameObject.SetActive(false);
             footstepsRunning.Stop();
         }
 
-        private void OnControllerColliderHit(ControllerColliderHit hit)
+        /*private void OnControllerColliderHit(ControllerColliderHit hit)
         {
             if (((1 << hit.collider.gameObject.layer) & obstacleLayer) != 0)
             {
                 TakeDamage(1);
+                animator.SetTrigger("Collision");
             }
 
             if (curHealth == 0)
@@ -265,13 +288,38 @@ namespace Runner.Player
                 GameOver();
             }
 
-        }
+        }*/
 
-        void OnCollisionEnter(Collision collision)
+        void OnTriggerEnter(Collider other)
         {
-            if (collision.gameObject.CompareTag("Obstacle"))
+            if (other.gameObject.layer == 7)
             {
-                capsuleCollider.enabled = false;
+                TakeDamage(17);
+                //animator.SetTrigger("Collision");
+                if (curHealth <= 0)
+                {
+                    animator.Play("Death");
+                    GameOver();
+                }
+
+            }
+            if (other.gameObject.layer == 8)
+            {
+                GameOver();
+            }
+
+            if (other.gameObject.layer == 9)
+            {
+                HealUp(20);
+                Destroy(other.gameObject);
+                //curHealth = 100;
+           
+
+            }
+
+            if (curHealth <= 0)
+            {
+                GameOver();
             }
 
         }

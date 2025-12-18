@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 namespace SlimUI.ModernMenu{
 	public class UIMenuManager : MonoBehaviour {
 
+        [SerializeField]
+        private Animator animator;
         private Animator CameraObject;
 		public GameObject Player;
 		public GameObject SpawnManager;
@@ -82,7 +84,7 @@ namespace SlimUI.ModernMenu{
             MainMenuTheme.Stop();
             Player.SetActive(true);
 			SpawnManager.SetActive(true);
-            
+            animator.SetTrigger("EndAnimation");
         }
 
 		public void ReturnMenu(){

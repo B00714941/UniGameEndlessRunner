@@ -19,6 +19,8 @@ namespace Runner
         private List<GameObject> obstacles;
         [SerializeField]
         private List<GameObject> straights;
+        [SerializeField]
+        private List<GameObject> powerups;
 
         private Vector3 currentTileLocation = Vector3.zero;
         private Vector3 currentTileDirection = Vector3.forward;
@@ -26,6 +28,12 @@ namespace Runner
 
         private List<GameObject> currentTiles;
         private List<GameObject> currentObstacles;
+
+        public GameObject curHealthGO;
+        [SerializeField]
+        int curHealth;
+
+
 
         private void DeletePrevious()
         {
@@ -57,6 +65,20 @@ namespace Runner
             currentObstacles.Add(obstacle);
 
         }
+
+        private void SpawnPowerUp()
+        {
+            if (Random.value > 0.2f) return;
+
+            GameObject powerupPrefab = SelectRandomGameObjectFromList(powerups);
+            Quaternion newObjectRotation = powerupPrefab.gameObject.transform.rotation * Quaternion.LookRotation(currentTileDirection, Vector3.up);
+
+            GameObject powerup = Instantiate(powerupPrefab, (currentTileLocation + new Vector3(0,1,0)), newObjectRotation);
+            currentObstacles.Add(powerup);
+
+        }
+
+
 
         public void AddNewDirection(Vector3 direction)
         {
@@ -99,6 +121,8 @@ namespace Runner
 
             if (spawnObstacle) SpawnObstacle();
 
+            if (curHealth < 100) SpawnPowerUp();
+
             // (3 , 4 , 5) * (0, 0, 1) => (0, 0, 5)
             if (tile.type == TileType.STRAIGHT) {
                 currentTileLocation += Vector3.Scale(prevTile.GetComponent<Renderer>().bounds.size, currentTileDirection);
@@ -114,6 +138,7 @@ namespace Runner
 
         private void Start()
         {
+            curHealth = curHealthGO.GetComponent<PlayerController>().curHealth;
             currentTiles = new List<GameObject>();
             currentObstacles = new List<GameObject>();
 
@@ -128,5 +153,11 @@ namespace Runner
             //SpawnTile(turnTiles[0].GetComponent<Tile>(),false);
             //AddNewDirection(Vector3.left);
         }
+
+        void Update()
+        {
+            curHealth = curHealthGO.GetComponent<PlayerController>().curHealth;
+        }
+
     }
 }

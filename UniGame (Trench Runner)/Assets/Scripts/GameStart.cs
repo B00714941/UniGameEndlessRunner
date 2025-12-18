@@ -10,6 +10,8 @@ public class GameStart : MonoBehaviour
     private GameObject SpawnManager;
     [SerializeField]
     private GameObject Player;
+    [SerializeField]
+    private GameObject PlayerGhost;
 
     // Start is called before the first frame update
     void Start()
@@ -17,6 +19,7 @@ public class GameStart : MonoBehaviour
         MainMenuCanvas.SetActive(true);
         SpawnManager.SetActive(false);
         Player.SetActive(false);
+        PlayerGhost.SetActive(false);
     }
 
     // Update is called once per frame
