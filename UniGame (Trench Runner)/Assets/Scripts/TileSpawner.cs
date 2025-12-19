@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace Runner
 {
+
+    //MOST OF THIS SCRIPT IS THE MATHS CONTENT (STATISTICS AND ROTATIONS) USING RANDOM RANGE/RANDOM VALUE TO SPAWN TILES AND QUATERNION FOR ROTATION
     public class TileSpawner : MonoBehaviour
     {
         //SetUp Tile Lists
@@ -57,7 +59,8 @@ namespace Runner
         }
 
 
-        //Randomly spawn a obstacle along the path
+        //Randomly spawn a obstacle along the path in the correct tile orientation
+        //MATHS CONTENT PRESENT HERE
         private void SpawnObstacle()
         {
             if (Random.value > 0.8f) return;
@@ -71,6 +74,7 @@ namespace Runner
         }
 
         //Randomly spawn a bandage along the path
+        //MATHS CONTENT PRESENT HERE
         private void SpawnPowerUp()
         {
             if (Random.value > 0.2f) return;
@@ -102,6 +106,8 @@ namespace Runner
 
             currentTileLocation += tilePlacemenetScale;
 
+
+            //MATHS CONTENT PRESENT HERE
             int currentPathLength = Random.Range(minStraightTiles, maxStraightTiles);
             for (int i = 0; i < currentPathLength; ++i)
             {
@@ -118,7 +124,7 @@ namespace Runner
 
         private void SpawnTile(Tile tile, bool spawnObstacle)
         {
-
+            //MATHS CONTENT PRESENT HERE
             Quaternion newTileRotation = tile.gameObject.transform.rotation * Quaternion.LookRotation(currentTileDirection, Vector3.up);
 
             prevTile = GameObject.Instantiate(tile.gameObject, currentTileLocation, newTileRotation);

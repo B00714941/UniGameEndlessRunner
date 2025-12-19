@@ -5,16 +5,17 @@ using UnityEngine.SceneManagement;
 
 public class RiseUp : MonoBehaviour
 {
-    private Vector3 StopAt = new Vector3(-130, 0, 456);
-    public float movementSpeed = 60f;
-    private Transform target;
-
+    public Transform startPoint;
+    public Transform endPoint;
 
     //This introduces a fun little intro note that gives a brief thematic tutorial by rising up from below screen
+    //MATHS CONTENT - VECTORS 2 - LERP
     void Update()
     {
-        Vector3 newPos = Vector3.MoveTowards(transform.position, StopAt, movementSpeed * Time.deltaTime);
-        transform.position = newPos;
+
+        float t = 0.005f;
+
+        transform.position = Vector3.Lerp(startPoint.position, endPoint.position, t);
  
     }
 

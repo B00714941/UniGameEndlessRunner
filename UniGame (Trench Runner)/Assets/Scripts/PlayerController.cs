@@ -161,7 +161,7 @@ namespace Runner
                 GameOver();
                 return;
             }
-
+            //MATHS CONTENT HERE FOR ROTATING PLAYER AFTER TURN TO CORRECT ORIENTATION
             Vector3 targetDirection = Quaternion.AngleAxis(90 * context.ReadValue<float>(), Vector3.up) * movementDirection;
             turnEvent.Invoke(targetDirection);
             Turn(context.ReadValue<float>(), turnPosition.Value);
@@ -175,6 +175,8 @@ namespace Runner
             transform.position = tempPlayerPosition;
             controller.enabled = true;
 
+
+            //MATHS CONTENT HERE FOR ROTATING PLAYER AFTER TURN TO CORRECT ORIENTATION
             Quaternion targetRotation = transform.rotation * Quaternion.Euler(0, 90 * turnValue, 0);
             transform.rotation = targetRotation;
             movementDirection = transform.forward.normalized;

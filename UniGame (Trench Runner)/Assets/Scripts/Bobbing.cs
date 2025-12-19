@@ -18,6 +18,7 @@ public class Bobbing : MonoBehaviour
     // This will raise the prefab up and down to create a bobbing effect and also slowly rotate it around itself
     void Update()
     {
+        //MATHS CONTENT HERE FOR ROTATING HEALTHPACK AROUND ITSELF - EULER ANGLES
         float newY = startPosition.y + Mathf.Sin(Time.time * speed) * height;
         transform.position = new Vector3(transform.position.x, newY, transform.position.z);
         transform.Rotate(0f, 50 * Time.deltaTime, 0f, Space.Self);
