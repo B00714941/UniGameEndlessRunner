@@ -5,31 +5,23 @@ using UnityEngine.SceneManagement;
 
 public class RiseUp : MonoBehaviour
 {
-    private Vector3 StopAt = new Vector3(-197, 0, 456);
+    private Vector3 StopAt = new Vector3(-130, 0, 456);
     public float movementSpeed = 60f;
     private Transform target;
 
-    // Start is called before the first frame update
+
+    //This introduces a fun little intro note that gives a brief thematic tutorial by rising up from below screen
     void Update()
     {
         Vector3 newPos = Vector3.MoveTowards(transform.position, StopAt, movementSpeed * Time.deltaTime);
         transform.position = newPos;
-        //StartCoroutine(IntroCoroutine());
+ 
     }
 
+    //Click the begin button once you've read the text to start the game
     public void BeginGame()
     {
         SceneManager.LoadScene("MainGameScene");
     }
 
-    // Update is called once per frame
-    //IEnumerator IntroCoroutine()
-    //{
-
-
-    // yield return new WaitForSeconds(20);
-    // SceneManager.LoadScene("MainGameScene");
-
-
-    //}
 }

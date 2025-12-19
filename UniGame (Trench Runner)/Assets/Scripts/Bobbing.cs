@@ -9,13 +9,13 @@ public class Bobbing : MonoBehaviour
 
     public Vector3 startPosition;
 
-    // Start is called before the first frame update
+    // This finds the start position of the prefab
     void Start()
     {
         startPosition = transform.position;
     }
 
-    // Update is called once per frame
+    // This will raise the prefab up and down to create a bobbing effect and also slowly rotate it around itself
     void Update()
     {
         float newY = startPosition.y + Mathf.Sin(Time.time * speed) * height;

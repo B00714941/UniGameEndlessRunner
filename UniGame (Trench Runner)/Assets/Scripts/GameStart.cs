@@ -6,25 +6,13 @@ public class GameStart : MonoBehaviour
 {
     [SerializeField]
     private GameObject MainMenuCanvas;
-    //[SerializeField]
-    //private GameObject SpawnManager;
-    //[SerializeField]
-    //private GameObject Player;
-    //[SerializeField]
-    //private GameObject PlayerGhost;
 
-    // Start is called before the first frame update
+
+    // This is just to ensure that the MainMenuCanvas activates when the game begins
     void Start()
     {
         MainMenuCanvas.SetActive(true);
-        //SpawnManager.SetActive(false);
-        //Player.SetActive(false);
-       // PlayerGhost.SetActive(false);
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

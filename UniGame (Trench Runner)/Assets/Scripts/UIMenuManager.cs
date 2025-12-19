@@ -4,14 +4,14 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 
+// This was a free asset I acquired from the unity store and modified to my own liking
+
 namespace SlimUI.ModernMenu{
 	public class UIMenuManager : MonoBehaviour {
 
         [SerializeField]
         private Animator animator;
         private Animator CameraObject;
-		//public GameObject Player;
-		//public GameObject SpawnManager;
 		public GameObject TITLE;
         [SerializeField]
         public AudioClip IntroFx;
@@ -37,8 +37,7 @@ namespace SlimUI.ModernMenu{
 
 		void Start()
 		{
-            //Player.SetActive(false);
-            //SpawnManager.SetActive(false);
+
             CameraObject = transform.GetComponent<Animator>();
 
 			playMenu.SetActive(false);
@@ -52,6 +51,7 @@ namespace SlimUI.ModernMenu{
             MainMenuTheme.Play();
         }
 
+		//sets the custom green theme
 		void SetThemeColors()
 		{
 			switch (theme)
@@ -77,17 +77,16 @@ namespace SlimUI.ModernMenu{
 			}
 		}
 
+		//Hit play button and load new scene while disabling other scenes
 		public void PlayCampaign(){
 			exitMenu.SetActive(false);
 			TITLE.SetActive(false);
 			mainMenu.SetActive(false);
             MainMenuTheme.Stop();
             SceneManager.LoadScene("IntroScreen");
-            //Player.SetActive(true);
-            //SpawnManager.SetActive(true);
-            //animator.SetTrigger("EndAnimation");
         }
 
+		//If Pop Up panel added would allow you to return to a previous menu
 		public void ReturnMenu(){
 			playMenu.SetActive(false);
 			exitMenu.SetActive(false);
@@ -98,12 +97,13 @@ namespace SlimUI.ModernMenu{
 			playMenu.SetActive(false);
 		}
 
-		// Are You Sure - Quit Panel Pop Up
+		// Are You Sure - Quit Panel Pop Up could be readded later
 		public void AreYouSure(){
 			exitMenu.SetActive(true);
 			DisablePlayCampaign();
 		}
 
+		//Quit the game as soon as you are in the main menu
 		public void QuitGame(){
 			#if UNITY_EDITOR
 				UnityEditor.EditorApplication.isPlaying = false;

@@ -5,6 +5,7 @@ namespace Runner
 {
     public class TileSpawner : MonoBehaviour
     {
+        //SetUp Tile Lists
         [SerializeField]
         private int tileStartCount = 5;
         [SerializeField]
@@ -29,12 +30,13 @@ namespace Runner
         private List<GameObject> currentTiles;
         private List<GameObject> currentObstacles;
 
+        //Connected to health in the playerController
         public GameObject curHealthGO;
         [SerializeField]
         int curHealth;
 
 
-
+        //Once player passes an obstacle and turns a corner, delete previous row of tiles and obstacles
         private void DeletePrevious()
         {
             //change to ObjectPooling Later
@@ -54,6 +56,8 @@ namespace Runner
             }
         }
 
+
+        //Randomly spawn a obstacle along the path
         private void SpawnObstacle()
         {
             if (Random.value > 0.8f) return;
@@ -66,6 +70,7 @@ namespace Runner
 
         }
 
+        //Randomly spawn a bandage along the path
         private void SpawnPowerUp()
         {
             if (Random.value > 0.2f) return;
@@ -119,23 +124,26 @@ namespace Runner
             prevTile = GameObject.Instantiate(tile.gameObject, currentTileLocation, newTileRotation);
             currentTiles.Add(prevTile);
 
+            //randomly triggers the spawning of obstacles in the binary true or false
             if (spawnObstacle) SpawnObstacle();
 
+            //if your health drops below 100, begin spawning random bandages
             if (curHealth < 100) SpawnPowerUp();
 
-            // (3 , 4 , 5) * (0, 0, 1) => (0, 0, 5)
             if (tile.type == TileType.STRAIGHT) {
                 currentTileLocation += Vector3.Scale(prevTile.GetComponent<Renderer>().bounds.size, currentTileDirection);
             }
             
         }
 
+        //Select a random object from your list
         private GameObject SelectRandomGameObjectFromList(List<GameObject> list)
         {
             if (list.Count == 0) return null;
             return list[Random.Range(0, list.Count)];
         }
 
+        //Initialise a random start position on a straight tile and get the current health and lists of tiles and objects
         private void Start()
         {
             curHealth = curHealthGO.GetComponent<PlayerController>().curHealth;
@@ -150,10 +158,10 @@ namespace Runner
             }
 
             SpawnTile(SelectRandomGameObjectFromList(turnTiles).GetComponent<Tile>(), false);
-            //SpawnTile(turnTiles[0].GetComponent<Tile>(),false);
-            //AddNewDirection(Vector3.left);
+
         }
 
+        //update the health for the spawning of powerups mechanic
         void Update()
         {
             curHealth = curHealthGO.GetComponent<PlayerController>().curHealth;

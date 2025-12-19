@@ -14,8 +14,7 @@ public class GameOver : MonoBehaviour
     private int score = 0;
 
 
-
-
+    // This StopGame function operates on an old scoring system but would ensure that the Game Over Screen showed up and showed score
     public void StopGame(int score)
     {
         Time.timeScale = 0f;
@@ -25,6 +24,7 @@ public class GameOver : MonoBehaviour
 
     }
 
+    // This WinGame function operates on an old scoring system but would ensure that the Game Win Screen showed up and showed score
     public void WinGame(int score)
     {
         Time.timeScale = 0f;
@@ -34,7 +34,7 @@ public class GameOver : MonoBehaviour
 
     }
 
-
+    // This ExitGame function allows for the game to be quit
     public void ExitGame()
     {
         #if UNITY_EDITOR
@@ -44,13 +44,13 @@ public class GameOver : MonoBehaviour
         #endif
     }
 
+    // This RestartLevel function allows for the current game scene to be restarted to allow replayability
     public void RestartLevel()
     {
         gameOverCanvas.SetActive(false);
         gameWinCanvas.SetActive(false);
         SceneManager.LoadScene("MainGameScene");
-        //SceneManager.LoadScene("TrenchRunner");
-        //SceneManager.SetActiveScene(SceneManager.GetSceneByName("TrenchRunner"));
+
     }
 
 }

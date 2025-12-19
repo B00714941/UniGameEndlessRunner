@@ -10,9 +10,8 @@ public enum TileType {
     SIDEWAYS
 }
 
-/// <summary>
-/// Defines the attributes of a tile.
-/// </summary>
+// Defines the attributes of a tile.
+
 public class Tile : MonoBehaviour
 {
     public TileType type;
